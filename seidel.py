@@ -78,7 +78,27 @@ def giveResidual(newSol):
 
     return residual
 
-class Example(QMainWindow, interface.Ui_MainWindow):
+def giveError(newSol):
+    vec = []
+    vec.append(newSol[1][1])
+    vec.append(newSol[1][2])
+    vec.append(newSol[2][1])
+    vec.append(newSol[2][2])
+
+    trueVec = []
+    for i in range(4):
+        trueVec.append(7/9)
+
+    value = 0
+    for i in range(4):
+        trueVec[i] = np.abs(vec[i] - trueVec[i])
+        if (trueVec[i] > value):
+            value = trueVec[i]
+
+    return value
+
+
+class Example(QMainWindow, interface.Ui_mainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -209,6 +229,9 @@ class Example(QMainWindow, interface.Ui_MainWindow):
                 value = np.sqrt(value)
                 temp = "Невязка на выходе: " + str(value)
                 self.residualEnd.setText(temp)
+                value = giveError(self.newSol)
+                temp = "Погрешность схемы: " + str(value)
+                self.errorScheme.setText(temp)
                 QMessageBox.question(self, 'Предупреждение!', "Достигнута заданная точность!", QMessageBox.Ok, QMessageBox.Ok)
                 return
 
@@ -265,6 +288,10 @@ class Example(QMainWindow, interface.Ui_MainWindow):
             value = np.sqrt(value)
             temp = "Невязка на выходе: " + str(value)
             self.residualEnd.setText(temp)
+
+            value = giveError(self.newSol)
+            temp = "Погрешность схемы: " + str(value)
+            self.errorScheme.setText(temp)
 
 
 if __name__ == '__main__':
