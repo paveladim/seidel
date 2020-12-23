@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>354</height>
+    <width>1016</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>100</y>
-      <width>881</width>
+      <y>70</y>
+      <width>711</width>
       <height>201</height>
      </rect>
     </property>
@@ -27,10 +27,10 @@
    <widget class="QPushButton" name="buildSolution">
     <property name="geometry">
      <rect>
-      <x>720</x>
+      <x>550</x>
       <y>10</y>
       <width>171</width>
-      <height>51</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -40,8 +40,8 @@
    <widget class="QPushButton" name="iterate">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>70</y>
+      <x>550</x>
+      <y>40</y>
       <width>171</width>
       <height>23</height>
      </rect>
@@ -99,8 +99,8 @@
    <widget class="QLabel" name="labelForIt">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>70</y>
+      <x>730</x>
+      <y>30</y>
       <width>171</width>
       <height>16</height>
      </rect>
@@ -112,14 +112,40 @@
    <widget class="QLabel" name="labelForEpsN">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>70</y>
-      <width>221</width>
+      <x>730</x>
+      <y>50</y>
+      <width>281</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
      <string>Достигнутая точность: 0.0</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="residualEnd">
+    <property name="geometry">
+     <rect>
+      <x>730</x>
+      <y>70</y>
+      <width>281</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Невязка на выходе: 0.0</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="results">
+    <property name="geometry">
+     <rect>
+      <x>730</x>
+      <y>10</y>
+      <width>281</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Результат работы метода Зейделя.</string>
     </property>
    </widget>
   </widget>
@@ -128,7 +154,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
+     <width>1016</width>
      <height>21</height>
     </rect>
    </property>

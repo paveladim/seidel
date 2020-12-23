@@ -40,7 +40,43 @@ def countEpsN(oldSol, newSol):
                 value = vec2[i]
 
         return value
+
+def giveResidual(newSol):
+    vec = []
+    vec.append(newSol[1][1])
+    vec.append(newSol[1][2])
+    vec.append(newSol[2][1])
+    vec.append(newSol[2][2])
+
+    rightFunction = []
+    for i in range(4):
+        rightFunction.append(-3.5)
+
+    matr = np.zeros((4, 4))
+    matr[0][0] = -9
+    matr[0][1] = 2.25
+    matr[0][2] = 2.25
+    matr[1][0] = 2.25
+    matr[1][1] = -9
+    matr[1][3] = 2.25
+    matr[2][0] = 2.25
+    matr[2][2] = -9
+    matr[2][3] = 2.25
+    matr[3][1] = 2.25
+    matr[3][2] = 2.25
+    matr[3][3] = -9
+
+    residual = []
+
+    for j in range(4):
+        value = 0
+        for i in range(4):
+            value = value + matr[j][i] * vec[i]
         
+        value = value - rightFunction[j]
+        residual.append(value)
+
+    return residual
 
 class Example(QMainWindow, interface.Ui_MainWindow):
     def __init__(self):
@@ -121,6 +157,9 @@ class Example(QMainWindow, interface.Ui_MainWindow):
             QMessageBox.question(self, 'Ошибка!', "Не введена требуемая точность!", QMessageBox.Ok, QMessageBox.Ok)
             return
 
+        if (self.iter >= self.nMax):
+            self.iter = 0
+            
         # считываю максимальное число итераций
         temp = self.lineEditForNMAX.text()
         self.nMax = int(temp)
@@ -162,6 +201,14 @@ class Example(QMainWindow, interface.Ui_MainWindow):
             self.labelForEpsN.setText(temp)
 
             if (self.epsN < self.eps):
+                residual = giveResidual(self.newSol)
+                value = 0
+                for i in range(4):
+                    value = value + residual[i] * residual[i]
+
+                value = np.sqrt(value)
+                temp = "Невязка на выходе: " + str(value)
+                self.residualEnd.setText(temp)
                 QMessageBox.question(self, 'Предупреждение!', "Достигнута заданная точность!", QMessageBox.Ok, QMessageBox.Ok)
                 return
 
@@ -176,9 +223,13 @@ class Example(QMainWindow, interface.Ui_MainWindow):
         vec.append(self.newSol[2][2])
 
         self.newSol[1][1] = 1/A * (f - hk * vec[1] - hk * vec[2])
+        vec[0] = self.newSol[1][1]
         self.newSol[1][2] = 1/A * (f - hk * vec[0] - hk * vec[3])
+        vec[1] = self.newSol[1][2]
         self.newSol[2][1] = 1/A * (f - hk * vec[0] - hk * vec[3])
+        vec[2] = self.newSol[2][1]
         self.newSol[2][2] = 1/A * (f - hk * vec[1] - hk * vec[2])
+        vec[3] = self.newSol[2][2]
 
         if (self.iter > 0):
             vec2 = []
@@ -188,9 +239,13 @@ class Example(QMainWindow, interface.Ui_MainWindow):
             vec2.append(self.oldSol[2][2])
 
             self.oldSol[1][1] = 1/A * (f - hk * vec2[1] - hk * vec2[2])
+            vec2[0] = self.oldSol[1][1]
             self.oldSol[1][2] = 1/A * (f - hk * vec2[0] - hk * vec2[3])
+            vec2[1] = self.oldSol[1][2]
             self.oldSol[2][1] = 1/A * (f - hk * vec2[0] - hk * vec2[3])
+            vec2[2] = self.oldSol[2][1]
             self.oldSol[2][2] = 1/A * (f - hk * vec2[1] - hk * vec2[2])
+            vec2[3] = self.oldSol[2][2]
 
         for j in range(4):
             for i in range(4):
@@ -201,6 +256,15 @@ class Example(QMainWindow, interface.Ui_MainWindow):
         self.iter += 1
         temp = "Проведено итераций: " + str(self.iter)
         self.labelForIt.setText(temp)
+        if (self.iter == self.nMax):
+            residual = giveResidual(self.newSol)
+            value = 0
+            for i in range(4):
+                value = value + residual[i] * residual[i]
+
+            value = np.sqrt(value)
+            temp = "Невязка на выходе: " + str(value)
+            self.residualEnd.setText(temp)
 
 
 if __name__ == '__main__':
